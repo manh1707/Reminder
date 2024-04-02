@@ -2,54 +2,100 @@ import 'package:flutter/material.dart';
 import 'package:reminder/const/assets.dart';
 import 'package:reminder/const/color.dart';
 import 'package:reminder/const/font.dart';
+import 'package:reminder/utils/router.dart';
+import 'package:reminder/utils/widgets/appbar.dart';
 
 class StandUpPage extends StatelessWidget {
   const StandUpPage({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final screenSize = MediaQuery.of(context).size;
     return Scaffold(
       backgroundColor: bg1Color,
-      appBar: AppBar(
-        backgroundColor: bg1Color,
-        title: Text(
-          "Stand up",
-          style: heading3.copyWith(fontWeight: FontWeight.bold),
-        ),
-      ),
-      drawer: _drawer(),
+      appBar: const CustomAppbar(title: "Standup"),
+      drawer: _drawer(context),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          SizedBox(height: 120),
-          Center(child: Image.asset(MyAssets.centerCireclePath)),
+          const SizedBox(height: 120),
+          Center(
+            child: Stack(
+              alignment: Alignment.center,
+              children: [
+                Image.asset(MyImageAssets.centerCireclePath),
+                Text(
+                  'You are sitting now',
+                  style: bodytext1.copyWith(
+                    fontWeight: FontWeight.bold,
+                    color: neutualShapeColor10,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Image.asset(MyImageAssets.middleLayer, width: screenSize.width),
         ],
       ),
     );
   }
 
-  Drawer _drawer() {
+  Drawer _drawer(BuildContext context) {
     return Drawer(
       backgroundColor: primaryColor,
       child: ListView(
         padding: EdgeInsets.zero,
         children: [
-          const DrawerHeader(
-            decoration: BoxDecoration(
-              color: Colors.blue,
+          const SizedBox(height: 60),
+          ListTile(
+            title: Text(
+              'MENU',
+              style: heading3.copyWith(
+                color: neutualShapeColor10,
+                fontWeight: FontWeight.bold,
+              ),
             ),
-            child: Text('Menu'),
-          ),
-          ListTile(
-            title: const Text('Item 1'),
             onTap: () {},
           ),
-          ListTile(
-            title: const Text('Item 2'),
-            onTap: () {},
+          _buildDrawerOption(
+            title: "Timer settings",
+            iconAsset: MyIconAssets.clock,
+            ontap: () {
+              Navigator.pushNamed(context, AppRoutepath.timerSetting);
+            },
+          ),
+          // ListTile(
+          //   title: const Text('Item 2'),
+          //   onTap: () {},
+          // ),
+        ],
+      ),
+    );
+  }
+
+  _buildDrawerOption({
+    required String title,
+    required String iconAsset,
+    required VoidCallback ontap,
+  }) {
+    return ListTile(
+      title: Row(
+        children: [
+          Image.asset(
+            iconAsset,
+            color: neutualShapeColor10,
+          ),
+          const SizedBox(width: 8),
+          Text(
+            title,
+            style: bodytext2.copyWith(
+              color: neutualShapeColor10,
+              fontWeight: FontWeight.w700,
+            ),
           ),
         ],
       ),
+      onTap: ontap,
     );
   }
 }
