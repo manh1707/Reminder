@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:reminder/page/standup_page.dart';
+import 'package:reminder/page/stand_up/standup_page.dart';
 import 'package:reminder/utils/router.dart';
 
 void main() async {

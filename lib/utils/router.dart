@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:reminder/page/standup_page.dart';
-import 'package:reminder/page/timer_setting.dart';
+import 'package:reminder/page/stand_up/standup_page.dart';
+import 'package:reminder/page/timer_setting/timer_setting_page.dart';
 
 class AppRoutepath {
   static const String home = '/home';

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:reminder/const/assets.dart';
 import 'package:reminder/const/color.dart';
 import 'package:reminder/const/font.dart';
+import 'package:reminder/page/stand_up/widget/bg_paint.dart';
 import 'package:reminder/utils/router.dart';
 import 'package:reminder/utils/widgets/appbar.dart';
 
@@ -16,27 +17,59 @@ class StandUpPage extends StatelessWidget {
       appBar: const CustomAppbar(title: "Standup"),
       drawer: _drawer(context),
       body: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
+        // mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          const SizedBox(height: 120),
-          Center(
-            child: Stack(
-              alignment: Alignment.center,
-              children: [
-                Image.asset(MyImageAssets.centerCireclePath),
-                Text(
-                  'You are sitting now',
-                  style: bodytext1.copyWith(
-                    fontWeight: FontWeight.bold,
-                    color: neutualShapeColor10,
-                  ),
+          // const SizedBox(height: 306),
+          CustomPaint(
+            painter: BgPaint(),
+            child: Center(
+              child: SizedBox(
+                height: 200,
+                child: Center(
+                  child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          "Stand up after:",
+                          style:
+                              bodytext1.copyWith(fontWeight: FontWeight.w700),
+                        ),
+                        Text(
+                          "21:05",
+                          style: heading1.copyWith(fontWeight: FontWeight.bold),
+                        )
+                      ]),
                 ),
-              ],
+              ),
             ),
           ),
-          Image.asset(MyImageAssets.middleLayer, width: screenSize.width),
         ],
       ),
+    );
+  }
+
+  Column _buildBody(Size screenSize) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        const SizedBox(height: 120),
+        Center(
+          child: Stack(
+            alignment: Alignment.center,
+            children: [
+              Image.asset(MyImageAssets.centerCireclePath),
+              Text(
+                'You are sitting now',
+                style: bodytext1.copyWith(
+                  fontWeight: FontWeight.bold,
+                  color: neutualShapeColor10,
+                ),
+              ),
+            ],
+          ),
+        ),
+        Image.asset(MyImageAssets.middleLayer, width: screenSize.width),
+      ],
     );
   }
 
