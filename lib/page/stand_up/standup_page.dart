@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:reminder/const/assets.dart';
 import 'package:reminder/const/color.dart';
@@ -17,32 +19,50 @@ class StandUpPage extends StatelessWidget {
       appBar: const CustomAppbar(title: "Standup"),
       drawer: _drawer(context),
       body: Column(
-        // mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          // const SizedBox(height: 306),
-          CustomPaint(
-            painter: BgPaint(),
-            child: Center(
-              child: SizedBox(
-                height: 200,
-                child: Center(
-                  child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          "Stand up after:",
-                          style:
-                              bodytext1.copyWith(fontWeight: FontWeight.w700),
-                        ),
-                        Text(
-                          "21:05",
-                          style: heading1.copyWith(fontWeight: FontWeight.bold),
-                        )
-                      ]),
+          // CustomPaint(
+          //   painter: BgPaint2(),
+          //   child: Center(
+          //     child: SizedBox(
+          //       height: 200,
+          //       child: Center(
+          //         child: Column(
+          //           mainAxisAlignment: MainAxisAlignment.center,
+          //           children: [
+          //             Text(
+          //               "Stand up after:",
+          //               style: bodytext1.copyWith(fontWeight: FontWeight.w700),
+          //             ),
+          //             Text(
+          //               "21:05",
+          //               style: heading1.copyWith(fontWeight: FontWeight.bold),
+          //             )
+          //           ],
+          //         ),
+          //       ),
+          //     ),
+          //   ),
+          // ),
+          Stack(
+            children: [
+              CustomPaint(
+                painter: BgPaint2(),
+                child: BackdropFilter(
+                  filter: ImageFilter.blur(
+                    sigmaX: 0.5,
+                    sigmaY: 0.5,
+                  ),
+                  child: Center(
+                    child: Container(
+                      height: 200,
+                      decoration: const BoxDecoration(),
+                      clipBehavior: Clip.none,
+                    ),
+                  ),
                 ),
               ),
-            ),
-          ),
+            ],
+          )
         ],
       ),
     );
