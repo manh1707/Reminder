@@ -2,11 +2,41 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:reminder/const/color.dart';
 import 'package:reminder/const/font.dart';
+import 'package:reminder/helper/alarm_helper.dart';
+import 'package:reminder/helper/storage_helpe.dart';
 import 'package:reminder/utils/widgets/appbar.dart';
 import 'package:reminder/utils/widgets/button.dart';
 
-class TimerSettingPage extends StatelessWidget {
+class TimerSettingPage extends StatefulWidget {
   const TimerSettingPage({super.key});
+
+  @override
+  State<TimerSettingPage> createState() => _TimerSettingPageState();
+}
+
+class _TimerSettingPageState extends State<TimerSettingPage> {
+  int cycleSetting = 0;
+  int breakSetting = 0;
+  void saveAlarm() async {
+    final cycleTime = await StorageHelper.getCycleSettings();
+    final breakTime = await StorageHelper.getBreakTimeSettings();
+    final breakDuration = Duration(minutes: breakTime);
+    final cycleDuration = Duration(minutes: cycleTime);
+    AlarmHelper.caculateStartTime(
+        breakTime: breakDuration, cycleTime: cycleDuration);
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getSetting();
+  }
+
+  void getSetting() async {
+    cycleSetting = await StorageHelper.getCycleSettings();
+    breakSetting = await StorageHelper.getBreakTimeSettings();
+    setState(() {});
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -16,19 +46,36 @@ class TimerSettingPage extends StatelessWidget {
       body: Column(
         children: [
           TimerSettingTile(
-            time: const TimeOfDay(hour: 0, minute: 55),
+            time: TimeOfDay(
+              hour: cycleSetting ~/ 60,
+              minute: (cycleSetting % 60).toInt(),
+            ),
             title: "Cycle",
             changeSetting: () {
               showDialog(
                 context: context,
-                builder: (_) => const TimeSettingDialog(),
+                builder: (_) => TimeSettingDialog(onSave: (duration) async {
+                  await StorageHelper.saveCyCleSettings(duration.inMinutes);
+                  saveAlarm();
+                }),
               );
             },
           ),
           TimerSettingTile(
-            time: const TimeOfDay(hour: 0, minute: 55),
+            time: TimeOfDay(
+              hour: breakSetting ~/ 60,
+              minute: (breakSetting % 60).toInt(),
+            ),
             title: "Break Time",
-            changeSetting: () {},
+            changeSetting: () {
+              showDialog(
+                context: context,
+                builder: (_) => TimeSettingDialog(onSave: (duration) async {
+                  await StorageHelper.saveBreakTimeSettings(duration.inMinutes);
+                  saveAlarm();
+                }),
+              );
+            },
           )
         ],
       ),
@@ -94,8 +141,21 @@ class TimerSettingTile extends StatelessWidget {
 
 const double _kItemExtent = 40;
 
-class TimeSettingDialog extends StatelessWidget {
-  const TimeSettingDialog({super.key});
+class TimeSettingDialog extends StatefulWidget {
+  const TimeSettingDialog({super.key, required this.onSave});
+  final Function(Duration duration) onSave;
+  @override
+  State<TimeSettingDialog> createState() => _TimeSettingDialogState();
+}
+
+class _TimeSettingDialogState extends State<TimeSettingDialog> {
+  int hour = 0;
+  int minute = 0;
+  int second = 0;
+  void saveSetting() {
+    final duration = Duration(hours: hour, minutes: minute, seconds: second);
+    widget.onSave(duration);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -118,40 +178,55 @@ class TimeSettingDialog extends StatelessWidget {
               child: Row(
                 children: [
                   Expanded(
-                    child: _picker(),
+                    child: _picker(
+                      onSelectedItemChanged: (value) {
+                        hour = value;
+                      },
+                    ),
                   ),
                   Text(
                     ":",
                     style: bodytext2.copyWith(fontWeight: FontWeight.w700),
                   ),
                   Expanded(
-                    child: _picker(),
+                    child: _picker(
+                      onSelectedItemChanged: (value) {
+                        minute = value;
+                      },
+                    ),
                   ),
                   Text(
                     ":",
                     style: bodytext2.copyWith(fontWeight: FontWeight.w700),
                   ),
                   Expanded(
-                    child: _picker(),
+                    child: _picker(
+                      onSelectedItemChanged: (value) {
+                        second = value;
+                      },
+                    ),
                   ),
                 ],
               ),
             ),
             const SizedBox(height: 24),
-            _buttons()
+            _buttons(context)
           ],
         ),
       ),
     );
   }
 
-  Widget _buttons() {
+  Widget _buttons(BuildContext context) {
     return Row(
       children: [
         Expanded(
           child: PrimaryButton(
             buttonSize: ButtonSize.size40,
-            onPressed: () {},
+            onPressed: () {
+              saveSetting();
+              Navigator.of(context).pop();
+            },
             title: 'Cancel',
             isEnable: false,
           ),
@@ -160,7 +235,10 @@ class TimeSettingDialog extends StatelessWidget {
         Expanded(
           child: PrimaryButton(
             buttonSize: ButtonSize.size40,
-            onPressed: () {},
+            onPressed: () {
+              saveSetting();
+              Navigator.of(context).pop();
+            },
             title: 'Save',
             isEnable: true,
           ),
@@ -169,7 +247,7 @@ class TimeSettingDialog extends StatelessWidget {
     );
   }
 
-  Widget _picker() {
+  Widget _picker({required Function(int) onSelectedItemChanged}) {
     const divider = SizedBox(
       width: 42,
       child: Divider(
@@ -181,7 +259,7 @@ class TimeSettingDialog extends StatelessWidget {
     return CupertinoPicker(
       itemExtent: _kItemExtent,
       looping: true,
-      onSelectedItemChanged: (e) {},
+      onSelectedItemChanged: onSelectedItemChanged,
       selectionOverlay: const Column(
         // mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [

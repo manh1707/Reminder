@@ -81,7 +81,7 @@ class BgPaint2 extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     Paint paint = Paint();
-    paint.color = neutualShapeColor10.withOpacity(0.5);
+    // paint.color = primaryColor;
     paint.strokeWidth = 2.0;
     Path path = Path();
     path.moveTo(0, 0);
@@ -105,8 +105,15 @@ class BgPaint2 extends CustomPainter {
     );
     path.lineTo(size.width, size.height);
     path.lineTo(0, size.height);
-    // path.close();
-    // path.moveTo(-size.width * 0.2, size.height * 0.2);
+    canvas.drawPath(path, paint);
+    path.close();
+    // path.moveTo(size.width, 0);
+    // path.quadraticBezierTo(
+    //   size.width * 0.8,
+    //   size.height * 0.1,
+    //   size.width * 0.4,
+    //   size.height * 0.2,
+    // );
     // path.quadraticBezierTo(
     //   size.width * 0.05,
     //   -size.height * 0.2,

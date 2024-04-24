@@ -1,9 +1,11 @@
+import 'package:alarm/alarm.dart';
 import 'package:flutter/material.dart';
 import 'package:reminder/page/stand_up/standup_page.dart';
 import 'package:reminder/utils/router.dart';
 
 void main() async {
-  // await Alarm.init();
+  WidgetsFlutterBinding.ensureInitialized();
+  await Alarm.init();
   runApp(const MyApp());
 }
 

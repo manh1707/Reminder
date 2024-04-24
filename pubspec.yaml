@@ -35,7 +35,11 @@ dependencies:
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
-  alarm: ^3.0.14
+  alarm: ^3.1.2
+  semicircle_indicator: ^1.1.1
+  sleek_circular_slider: ^2.0.1
+  permission_handler: ^11.3.1
+  shared_preferences: ^2.2.3
 
 dev_dependencies:
   flutter_test:
@@ -63,6 +67,7 @@ flutter:
   assets:
     - assets/images/
     - assets/icons/
+    - assets/audio/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

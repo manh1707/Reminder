@@ -15,19 +15,22 @@ class PrimaryButton extends StatelessWidget {
   final bool isEnable;
   @override
   Widget build(BuildContext context) {
-    return Container(
-      alignment: Alignment.center,
-      height: buttonSize.size,
-      decoration: BoxDecoration(
-        borderRadius: const BorderRadius.all(
-          Radius.circular(8),
+    return GestureDetector(
+      onTap: onPressed,
+      child: Container(
+        alignment: Alignment.center,
+        height: buttonSize.size,
+        decoration: BoxDecoration(
+          borderRadius: const BorderRadius.all(
+            Radius.circular(8),
+          ),
+          color: isEnable ? primaryColor : neutualShapeColor6,
         ),
-        color: isEnable ? primaryColor : neutualShapeColor6,
-      ),
-      child: Text(
-        title,
-        style: buttonSize.textStyle.copyWith(
-          color: isEnable ? neutualShapeColor10 : neutualShapeColor2,
+        child: Text(
+          title,
+          style: buttonSize.textStyle.copyWith(
+            color: isEnable ? neutualShapeColor10 : neutualShapeColor2,
+          ),
         ),
       ),
     );
