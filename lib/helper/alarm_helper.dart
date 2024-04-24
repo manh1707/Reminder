@@ -21,7 +21,7 @@ class AlarmHelper {
     DateTime startTime = DateTime.now().copyWith(hour: 9, minute: 0, second: 0);
     for (var i = 0; i < n; i++) {
       startTime = startTime.add(cycleTime);
-      final alarmTime = startTime.add(cycleTime);
+      final alarmTime = startTime;
       startTime = startTime.add(breakTime);
       setAlarm(alarmTime, i + 1);
     }
