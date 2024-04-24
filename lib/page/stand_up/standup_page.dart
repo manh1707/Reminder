@@ -54,7 +54,7 @@ class _StandUpPageState extends State<StandUpPage> {
       countDown = (cycleTime - n - 1) * 60 + 60 - nowSecond;
     } else {
       isStanding = true;
-      countDown = (breakTime - n - 1) * 60 + 60 - nowSecond;
+      countDown = ((cycleTime + breakTime) - n - 1) * 60 + 60 - nowSecond;
     }
     Timer.periodic(const Duration(seconds: 1), (timer) {
       if (countDown == 0) {
